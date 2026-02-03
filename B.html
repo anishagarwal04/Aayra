@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Aayra</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(180deg, #fff1f2 0%, #ffe4e6 100%);
+        }
+        .fade-in {
+            animation: fadeIn 1.2s ease-in-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+    </style>
+</head>
+<body class="gradient-bg h-screen flex items-center justify-center overflow-hidden font-sans">
+    
+    <audio id="bgMusic" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="text-center p-6 max-w-lg w-full">
+        <div id="question-container">
+            <img id="image-display" class="rounded-3xl shadow-xl h-[250px] md:h-[300px] mb-8 mx-auto" 
+                 src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHIycXh6eG5ueXh6eG5ueXh6eG5ueXh6eG5ueXh6eG5ueXh6JmVwPXYxX2ludGVybmFsX2dpZl9ieV9iZCZjdD1n/c76IJLufpNUMo/giphy.gif">
+            
+            <h1 class="text-3xl md:text-5xl font-bold text-rose-600 mb-10">Aayra, will you be my valentine? ❤️</h1>
+            
+            <div class="flex flex-row justify-center gap-6 items-center min-h-[100px]">
+                <button id="yesButton" class="bg-rose-500 hover:bg-rose-600 text-white font-bold py-3 px-8 rounded-full shadow-lg transition-all duration-300 z-50">
+                    Yes
+                </button>
+                <button id="noButton" class="bg-gray-400 hover:bg-gray-500 text-white font-bold py-3 px-8 rounded-full shadow-lg">
+                    No
+                </button>
+            </div>
+        </div>
+
+        <div id="response-container" class="hidden fade-in">
+            <div class="flex justify-center mb-4">
+                <dotlottie-player 
+                    src="https://lottie.host/86d12351-ad43-4390-953e-e67306059d4c/n6u6r5C78k.json" 
+                    background="transparent" 
+                    speed="1" 
+                    style="width: 300px; height: 300px;" 
+                    loop 
+                    autoplay>
+                </dotlottie-player>
+            </div>
+            <h1 class="text-4xl font-serif italic text-rose-700">I'm so happy! See you soon, Aayra. ✨</h1>
+        </div>
+    </div>
+
+    <script>
+        const yesButton = document.getElementById('yesButton');
+        const noButton = document.getElementById('noButton');
+        const bgMusic = document.getElementById('bgMusic');
+        const questionContainer = document.getElementById('question-container');
+        const responseContainer = document.getElementById('response-container');
+
+        let noClickCount = 0;
+        const messages = ["No", "Are you sure?", "Pleease?", "Think again!", "You're breaking my heart!", "Look at the 'Yes' button!"];
+
+        noButton.addEventListener('click', () => {
+            bgMusic.play().catch(() => {});
+            noClickCount++;
+            if (noClickCount < messages.length) noButton.innerText = messages[noClickCount];
+
+            const x = Math.random() * (window.innerWidth - noButton.offsetWidth);
+            const y = Math.random() * (window.innerHeight - noButton.offsetHeight);
+            noButton.style.position = 'fixed';
+            noButton.style.left = `${x}px`;
+            noButton.style.top = `${y}px`;
+
+            const currentSize = parseFloat(window.getComputedStyle(yesButton).fontSize);
+            yesButton.style.fontSize = `${currentSize * 1.2}px`;
+        });
+
+        yesButton.addEventListener('click', () => {
+            bgMusic.play().catch(() => {});
+            questionContainer.classList.add('hidden');
+            responseContainer.classList.remove('hidden');
+        });
+    </script>
+</body>
+</html>
