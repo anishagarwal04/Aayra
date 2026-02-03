@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Aayra</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(180deg, #fff1f2 0%, #ffe4e6 100%);
+        }
+        .fade-in {
+            animation: fadeIn 1.2s ease-in-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+    </style>
+</head>
+<body class="gradient-bg h-screen flex items-center justify-center overflow-hidden font-sans">
+    
+    <audio id="bgMusic" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="text-center p-6 max-w-lg w-full">
+        <div id="question-container">
+            <img id="image-display" class="rounded-3xl shadow-xl h-[250px] md:h-[300px] mb-8 mx-auto object-cover" 
+                 src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHIycXh6eG5ueXh6eG5ueXh6eG5ueXh6eG5ueXh6eG5ueXh6JmVwPXYxX2ludGVybmFsX2dpZl9ieV9iZCZjdD1n/c76IJLufpNUMo/giphy.gif">
+            
+            <h1 class="text-3xl md:text-5xl font-bold text-rose-600 mb-10">Aayra, will you be my valentine? ❤️</h1>
+            
+            <div class="flex flex-row justify-center gap-6 items-center min-h-[100px]">
+                <button id="yesButton" class="bg-rose-500 hover:bg-rose-600 text-white font-bold py-3 px-8 rounded-full shadow-lg transition-all duration-300 z-50">
+                    Yes
+                </button>
+                <button id="noButton" class="bg-gray-400 hover:bg-gray-500 text-white font-bold py-3 px-8 rounded-full shadow-lg">
+                    No
+                </button>
+            </div>
+        </div>
+
+        <div id="response-container" class="hidden fade-in">
+            <video id="successVideo" class="rounded-3xl shadow-2xl w-full max-h-[400px] mb-8 mx-auto object-cover" loop playsinline muted>
+                <source src="https://assets.mixkit.co/videos/preview/mixkit-red-rose-petals-falling-on-a-white-background-2544-large.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <h1 class="text-4xl font-serif italic text-rose-700">I'm so happy! See you soon, Aayra. ✨</h1>
+        </div>
+    </div>
+
+    <script>
+        const yesButton = document.getElementById('yesButton');
+        const noButton = document.getElementById('noButton');
+        const bgMusic = document.getElementById('bgMusic');
+        const successVideo = document.getElementById('successVideo');
+        const questionContainer = document.getElementById('question-container');
+        const responseContainer = document.getElementById('response-container');
+
+        let noClickCount = 0;
+        const messages = ["No", "Are you sure?", "Pleease?", "Think again!", "You're breaking my heart!", "Look at the 'Yes' button!"];
+
+        noButton.addEventListener('click', () => {
+            // Start music on first interaction
+            bgMusic.play().catch(() => {});
+            
+            noClickCount++;
+            if (noClickCount < messages.length) noButton.innerText = messages[noClickCount];
+
+            const x = Math.random() * (window.innerWidth - noButton.offsetWidth);
+            const y = Math.random() * (window.innerHeight - noButton.offsetHeight);
+            noButton.style.position = 'fixed';
+            noButton.style.left = `${x}px`;
+            noButton.style.top = `${y}px`;
+
+            const currentSize = parseFloat(window.getComputedStyle(yesButton).fontSize);
+            yesButton.style.fontSize = `${currentSize * 1.2}px`;
+        });
+
+        yesButton.addEventListener('click', () => {
+            // 1. Play Music
+            bgMusic.play().catch(() => {});
+            
+            // 2. Hide Question, Show Response
+            questionContainer.classList.add('hidden');
+            responseContainer.classList.remove('hidden');
+            
+            // 3. Force Video to Play
+            successVideo.muted = false; // Unmute it now that user has clicked
+            successVideo.play().catch(error => {
+                console.log("Video play failed:", error);
+                // Fallback: If video fails, try playing it muted (browsers always allow muted)
+                successVideo.muted = true;
+                successVideo.play();
+            });
+        });
+    </script>
+</body>
+</html>
