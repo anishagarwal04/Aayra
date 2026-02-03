@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Aayra</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(180deg, #fff1f2 0%, #ffe4e6 100%);
+        }
+        #noButton {
+            transition: all 0.2s ease;
+        }
+        /* Added a soft fade-in for the response */
+        .fade-in {
+            animation: fadeIn 1.5s ease-in forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="gradient-bg h-screen flex items-center justify-center overflow-hidden font-serif">
+    
+    <audio id="bgMusic" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="text-center p-4">
+        <div id="question-container">
+            <img id="image-display" class="rounded-2xl shadow-lg h-[300px] mb-6 mx-auto" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHIycXh6eG5ueXh6eG5ueXh6eG5ueXh6eG5ueXh6eG5ueXh6JmVwPXYxX2ludGVybmFsX2dpZl9ieV9iZCZjdD1n/c76IJLufpNUMo/giphy.gif" alt="Cute gif">
+            <h1 class="text-4xl md:text-5xl font-bold text-[#be123c] mb-8">Aayra, will you be my valentine? ❤️</h1>
+            <div class="flex flex-wrap justify-center gap-6 items-center">
+                <button id="yesButton" class="bg-rose-500 hover:bg-rose-600 text-white font-semibold py-3 px-8 rounded-full shadow-md transform transition-all duration-300 z-10">
+                    Yes
+                </button>
+                <button id="noButton" class="bg-gray-400 hover:bg-gray-500 text-white font-semibold py-3 px-8 rounded-full shadow-md">
+                    No
+                </button>
+            </div>
+        </div>
+
+        <div id="response-container" class="hidden fade-in">
+            <img class="rounded-2xl shadow-2xl h-[350px] mb-6 mx-auto" 
+                 src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHR1am9pZ3NueHh6eG5ueXh6eG5ueXh6eG5ueXh6eG5ueXh6JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/l4pTdcifPKUYMlS7e/giphy.gif" 
+                 alt="Elegant Heart">
+            <h1 class="text-4xl font-light italic text-[#be123c]">I knew you'd say yes. See you soon, Aayra. ✨</h1>
+        </div>
+    </div>
+
+    <script>
+        const yesButton = document.getElementById('yesButton');
+        const noButton = document.getElementById('noButton');
+        const bgMusic = document.getElementById('bgMusic');
+        const questionContainer = document.getElementById('question-container');
+        const responseContainer = document.getElementById('response-container');
+
+        let noClickCount = 0;
+        const messages = [
+            "No", "Are you sure?", "Pleease Aayra?", "Don't do this to me :(",
+            "I'm gonna cry...", "You're breaking my heart", "Give it one more thought!", "Just click Yes already! :D"
+        ];
+
+        const startMusic = () => {
+            bgMusic.play().catch(e => console.log("Audio play blocked."));
+        };
+
+        noButton.addEventListener('click', () => {
+            startMusic();
+            noClickCount++;
+            if (noClickCount < messages.length) {
+                noButton.innerText = messages
