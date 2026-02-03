@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Aayra</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(180deg, #fff1f2 0%, #ffe4e6 100%);
+        }
+        .fade-in {
+            animation: fadeIn 1.2s ease-in-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body class="gradient-bg h-screen flex items-center justify-center overflow-hidden font-sans">
+    
+    <audio id="bgMusic" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="text-center p-6 max-w-lg">
+        <div id="question-container">
+            <img id="image-display" class="rounded-3xl shadow-xl h-[250px] md:h-[300px] mb-8 mx-auto" 
+                 src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHIycXh6eG5ueXh6eG5ueXh6eG5ueXh6eG5ueXh6eG5ueXh6JmVwPXYxX2ludGVybmFsX2dpZl9ieV9iZCZjdD1n/c76IJLufpNUMo/giphy.gif" 
+                 alt="Cute Bear">
+            
+            <h1 class="text-3xl md:text-5xl font-bold text-rose-600 mb-10">Aayra, will you be my valentine? ❤️</h1>
+            
+            <div id="button-group" class="flex flex-row justify-center gap-6 items-center min-h-[100px]">
+                <button id="yesButton" class="bg-rose-500 hover:bg-rose-600 text-white font-bold py-3 px-8 rounded-full shadow-lg transition-all duration-300 z-50">
+                    Yes
+                </button>
+                <button id="noButton" class="bg-gray-400 hover:bg-gray-500 text-white font-bold py-3 px-8 rounded-full shadow-lg transition-all duration-200">
+                    No
+                </button>
+            </div>
+        </div>
+
+        <div id="response-container" class="hidden fade-in">
+            <img class="rounded-3xl shadow-2xl h-[300px] mb-8 mx-auto" 
+                 src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExN3ZreGZueXh6eG5ueXh6eG5ueXh6eG5ueXh6eG5ueXh6eG5ueXh6JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/KzM1lAfJjCW3TM3p2P/giphy.gif" 
+                 alt="Elegant Hearts">
+            <h1 class="text-4xl font-serif italic text-rose-700">I'm so happy! See you soon, Aayra. ✨</h1>
+        </div>
+    </div>
+
+    <script>
+        const yesButton = document.getElementById('yesButton');
+        const noButton = document.getElementById('noButton');
+        const bgMusic = document.getElementById('bgMusic');
+        const questionContainer = document.getElementById('question-container');
+        const responseContainer = document.getElementById('response-container');
+
+        let noClickCount = 0;
+        const messages = [
+            "No", 
+            "Are you sure?", 
+            "Pleease Aayra?", 
+            "Think about it again!", 
+            "I'll be very sad...", 
+            "Wait, look at the Yes button!", 
+            "Click the big one! :D"
+        ];
+
+        // Function to handle audio play on first interaction
+        const handleInteraction = () => {
+            bgMusic.play().catch(() => { /* Silence errors if browser still blocks */ });
+        };
+
+        noButton.addEventListener('click', () => {
+            handleInteraction();
+            noClickCount++;
+
+            // Update text
+            if (noClickCount < messages.length) {
+                noButton.innerText = messages[noClickCount];
+            }
+
+            // Move "No" button to random position
+            const x = Math.random() * (window.innerWidth - noButton.offsetWidth);
+            const y = Math.random() * (window.innerHeight - noButton.offsetHeight);
+            noButton.style.position = 'fixed';
+            noButton.style.left = `${x}px`;
+            noButton.style.top = `${y}px`;
+
+            // Make "Yes" button grow
+            const currentSize = parseFloat(window.getComputedStyle(yesButton).fontSize);
+            yesButton.style.fontSize = `${currentSize * 1.2}px`;
+            yesButton.style.padding = `${parseFloat(window.getComputedStyle(yesButton).paddingTop) * 1.1}px ${parseFloat(window.getComputedStyle(yesButton).paddingLeft) * 1.1}px`;
+        });
+
+        yesButton.addEventListener('click', () => {
+            handleInteraction();
+            questionContainer.classList.add('hidden');
+            responseContainer.classList.remove('hidden');
+        });
+    </script>
+</body>
+</html>
